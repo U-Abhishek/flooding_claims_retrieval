@@ -11,18 +11,19 @@ def extract_gage_info(mat_path, var_name):
         for entry in gages:
             # Each entry is a tuple with known structure
             tup = entry[0]
-            # Extract gauge id, coordinates, discharge
+            # Extract gauge id, coordinates, discharge, sqmi
             try:
                 gauge_id = tup[4][0] if len(tup[4]) > 0 else None
                 lon = tup[1][:,0].tolist() if tup[1].ndim == 2 else tup[1].tolist()
                 lat = tup[1][:,1].tolist() if tup[1].ndim == 2 else tup[1].tolist()
                 discharge = tup[5][0][0] if tup[5].size > 0 else None
-                # Date is not present in this structure
+                sqmi = tup[6][0][0] if len(tup) > 6 and tup[6].size > 0 else None
                 events.append({
                     'gauge_id': gauge_id,
                     'longitude': lon,
                     'latitude': lat,
-                    'discharge': discharge
+                    'discharge': discharge,
+                    'sqmi': sqmi
                 })
             except Exception as e:
                 continue
